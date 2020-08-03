@@ -1,48 +1,49 @@
 \section{The Ferroelectric Capacitor (FECAP)}
 
-The ferroelectric capacitor is the fundamental ferroelectric device that we need to model. The simplest ferroelectric device structure to model is the parallel plate capacitor where the dielectric is the ferroelectric material. The Gibbs free energy of the ferroelectric may be described using\begin{IEEEeqnarray}{rCl}
-E_{Gibbs} & = & \frac{alpha}{2}P^{2} + \frac{\beta}{4}P^{4} + \frac{\gamma}{6}P^{6} - \xi{}P \label{eq:GibbsFE}
-\end{IEEEeqnarray}where $P$ is the ferroelectric polarization of the material, $\xi$ is the electric-field applied across the ferroelectric material, and $\alpha$, $\beta$ and $\gamma$ are the second, fourth, and sixth order fitting coefficients, respectively. Equation~\ref{eq:GibbsFE} only has even order terms to ensure symmetry of the energy landscape with respect to the ferroelectric polarization. By choosing the fitting coefficients correctly, we can ensure the energy landscape will have two minima separated by an energy barrier. These can be obtained by taking the first derivative of Equation~\ref{eq:GibbsFE} with respect to $P$\begin{IEEEeqnarray}{rCl}
-\frac{\partial{}E_{Gibbs}}{\partial{}P}\left(\xi{}=0\right) & = & \alpha{}P + \beta{}P^{3} + \gamma{}P^{5} \\
+The ferroelectric capacitor is the fundamental ferroelectric device that we need to model. The simplest ferroelectric device structure to model is the parallel plate capacitor where the dielectric is the ferroelectric material. The Gibbs free energy, $E_\text{Gibbs}$, of the ferroelectric may be described using\begin{IEEEeqnarray}{rCl}
+E_\text{Gibbs} & = & \frac{\alpha}{2}P^{2} + \frac{\beta}{4}P^{4} + \frac{\gamma}{6}P^{6} - \xi{}P \label{eq:GibbsFE}
+\end{IEEEeqnarray}where $P$ is the ferroelectric polarization of the material, $\xi$ is the electric-field applied across the ferroelectric material, and $\alpha$, $\beta$ and $\gamma$ are the second, fourth, and sixth order fitting coefficients, respectively. Equation~(\ref{eq:GibbsFE}) has only even order terms (when $\xi{}=0$) to ensure symmetry of the energy landscape with respect to the ferroelectric polarization. By choosing the fitting coefficients correctly, we can ensure the energy landscape will have two minima separated by an energy barrier. These can be obtained by taking the first order derivative of Equation~(\ref{eq:GibbsFE}) with respect to $P$\begin{IEEEeqnarray}{rCl}
+\frac{\partial{}E_\text{Gibbs}}{\partial{}P}\left(\xi{}=0\right) & = & \alpha{}P + \beta{}P^{3} + \gamma{}P^{5} \\
 & = & P\left(\alpha{} + \beta{}P^{2} + \gamma{}P^{4}\right) \label{eq:derivGibbsFE} \\
 & = & 0
 \end{IEEEeqnarray}In order for there to be two minima, we need to solve\begin{IEEEeqnarray}{rCl}
 0 & = & \alpha{} + \beta{}P^{2} + \gamma{}P^{4} \\
-P^{2} & = & \frac{-\beta\pm\sqrt{\beta^{2}-4\gamma\alpha}}{2\gamma} \gt 0
-\end{IEEEeqnarray}Typically, $\gamma\gt{}0$ and $\beta\gt0$, and therefore,\begin{IEEEeqnarray}{rCl}
-\sqrt{\beta^{2}-4\gamma\alpha} & \gt & \beta \\
-\beta^{2}-4\gamma\alpha & \gt & \beta^{2} \\
-\alpha & \lt & 0
+P^{2} & = & \frac{-\beta\pm\sqrt{\beta^{2}-4\gamma\alpha}}{2\gamma} > 0
+\end{IEEEeqnarray}Typically, $\gamma>0$ and $\beta>0$, and therefore,\begin{IEEEeqnarray}{rCl}
+\sqrt{\beta^{2}-4\gamma\alpha} & > & \beta \\
+\beta^{2}-4\gamma\alpha & > & \beta^{2} \\
+\alpha & < & 0
 \end{IEEEeqnarray}is the condition that suffices to yield two roots that correspond to the remnant polarization of the ferroelectric material.
 
 Thus far, we have only considered the d.c. behaviour of the FECAP and used the conditions to derive the relationships for the fitting coefficients. The time-dependent dynamics of the ferroelectric can be derived from the energy landscape using\begin{IEEEeqnarray}{rCl}
-\kappa\frac{\partial{}P}{\partial\tau} & = & -\rho\frac{\partial{}E_{Gibbs}}{\partial{}P}
+\kappa\frac{\partial{}P}{\partial\tau} & = & -\rho\frac{\partial{}E_\text{Gibbs}}{\partial{}P}
 \end{IEEEeqnarray}where $t$ is the real time-scale and we have used $\tau=\kappa{}t$ as the natural time. $\rho$ describes the time-scale within which the ferroelectric polarization settles to the equilibrium state (an energy minimum state) from an out-of-equilibrium state (non-energy minimum state). An alternative scheme uses\begin{IEEEeqnarray}{rCl}
-\frac{\partial{}P}{\partial\tau} & = & -\rho{}'\frac{\partial{}E_{Gibbs}}{\partial{}P}
+\frac{\partial{}P}{\partial\tau} & = & -\rho{}'\frac{\partial{}E_\text{Gibbs}}{\partial{}P}
 \end{IEEEeqnarray}where $\rho{}'=\rho{}/\kappa{}$. Expanding, we get\begin{IEEEeqnarray}{rCl}
 \frac{\partial{}P}{\partial\tau} & = & -\rho{}'\left(\alpha{}P + \beta{}P^{3} + \gamma{}P^{5} - \xi{}\right) \label{eq:feTimeEvolve}
 \end{IEEEeqnarray}
 
 The capacitance of the ferroelectric capacitor is related to $P$ in the following way. In the simple parallel capacitor, the charge stored in it is directly proportional to the voltage across it, or in other words\begin{IEEEeqnarray}{rCl}
-Q_{stored} & = & C_{PP}V_{C} \\
-\frac{\partial{}Q_{stored}}{\partial{}V_{C}} & = & C_{PP} \\
+Q_{stored} & = & C_\text{PP}V_{C} \\
+\frac{\partial{}Q_{stored}}{\partial{}V_{C}} & = & C_\text{PP} \\
 \end{IEEEeqnarray}The ferroelectric capacitor is non-linear and we may assume $Q_{stored}=P$ to derive the capacitance of the FECAP. In other words, we solve for\begin{IEEEeqnarray}{rCl}
-\frac{\partial{}P}{\partial{}V_{C}} & = & C_{FE}
+\frac{\partial{}P}{\partial{}V_{C}} & = & C_\text{FE}
 \end{IEEEeqnarray}which can be derived if we have a relationship between the voltage applied across the FECAP and the ferroelectric polarization. This relationship is obtained by considering the relationship between the electric-field across the FECAP and the polarization, since we can assume that $\xi{}=-\eta{}V_{C}$. Thus, we have $\partial{}\xi{}=-\eta{}\partial{}V_{C}$. Now, the chain rule tells us that\begin{IEEEeqnarray}{rCl}
-\frac{\partial{}P}{\partial{}V_{C}} & = & \eta\frac{\partial{}P}{\partial{}E_{Gibbs}}\frac{\partial{}E_{Gibbs}}{\partial{}\xi{}} \\
-& = & \eta\frac{\partial{}E_{Gibbs}}{\partial{}\xi{}}\left(\frac{\partial{}E_{Gibbs}}{\partial{}P}\right)^{-1}
-\end{IEEEeqnarray}The two derivatives can be obtained from Equation~\ref{eq:GibbsFE} as\begin{IEEEeqnarray}{rCl}
-\frac{\partial{}E_{Gibbs}}{\partial{}\xi{}} & = & -P \\
-\frac{\partial{}E_{Gibbs}}{\partial{}P} & = & \alpha{}P + \beta{}P^{3} + \gamma{}P^{5} - \xi{}
+\frac{\partial{}P}{\partial{}V_{C}} & = & -\eta\frac{\partial{}P}{\partial{}E_\text{Gibbs}}\frac{\partial{}E_\text{Gibbs}}{\partial{}\xi{}} \\
+& = & -\eta\frac{\partial{}E_\text{Gibbs}}{\partial{}\xi{}}\left(\frac{\partial{}E_\text{Gibbs}}{\partial{}P}\right)^{-1}
+\end{IEEEeqnarray}The two derivatives can be obtained from Equation~(\ref{eq:GibbsFE}) as\begin{IEEEeqnarray}{rCl}
+\frac{\partial{}E_\text{Gibbs}}{\partial{}\xi{}} & = & -P \\
+\frac{\partial{}E_\text{Gibbs}}{\partial{}P} & = & \alpha{}P + \beta{}P^{3} + \gamma{}P^{5} - \xi{}
 \end{IEEEeqnarray}which are combined to give\begin{IEEEeqnarray}{rCl}
 \frac{\partial{}\xi{}}{\partial{}P} & = & \frac{\xi}{P} - \alpha - \beta{}P^{2} - \gamma{}P^{4} \\
--eta\frac{\partial{}V_{C}}{\partial{}P} & = & \frac{\xi}{P} - \alpha - \beta{}P^{2} - \gamma{}P^{4} \\
-\frac{\partial{}V_{C}}{\partial{}P} & = & \frac{\alpha}{\eta} + \frac{\beta{}P^{2}}{\eta} + \frac{\gamma{}P^{4}}{\eta} - \frac{\xi}{\eta{}P}
+-\eta\frac{\partial{}V_{C}}{\partial{}P} & = & \frac{\xi}{P} - \alpha - \beta{}P^{2} - \gamma{}P^{4} \\
+\frac{\partial{}V_{C}}{\partial{}P} & = & \frac{\alpha}{\eta} + \frac{\beta{}P^{2}}{\eta} + \frac{\gamma{}P^{4}}{\eta} - \frac{\xi}{\eta{}P} \\
+& = &  \frac{\alpha}{\eta} + \frac{\beta{}P^{2}}{\eta} + \frac{\gamma{}P^{4}}{\eta} + \frac{V_{C}}{P}
 \end{IEEEeqnarray}Finally, the capacitance of the FECAP is\begin{IEEEeqnarray}{rCl}
-C_{FE} & = & \left(\frac{\partial{}V_{C}}{\partial{}P}\right)^{-1} \\
+C_\text{FE} & = & \left(\frac{\partial{}V_{C}}{\partial{}P}\right)^{-1} \\
 & = & \left(\frac{\alpha}{\eta} + \frac{\beta{}P^{2}}{\eta} + \frac{\gamma{}P^{4}}{\eta} - \frac{\xi}{\eta{}P}\right)^{-1} \label{eq:FECAP}
 \end{IEEEeqnarray}
 
-The compact model for the FECAP can be developed as follows. First, the compact model needs to model the time evolution of the ferroelectric polarization. This is captured using Equation~\ref{eq:feTimeEvolve}. Then, the \emph{I}-\emph{V} relationship of the FECAP can be modeled using the equation\begin{IEEEeqnarray}{rCl}
-I_{FECAP} & = & C_{FE}\frac{\partial{}V_{FECAP}}{\partial{}t}
-\end{IEEEeqnarray}where C_{FE} is calculated using Equation~\ref{eq:FECAP}.
+The compact model for the FECAP can be developed as follows. First, the compact model needs to model the time evolution of the ferroelectric polarization. This is captured using Equation~(\ref{eq:feTimeEvolve}). Then, the \emph{I}-\emph{V} relationship of the FECAP can be modeled using the equation\begin{IEEEeqnarray}{rCl}
+I_\text{FECAP} & = & C_\text{FE}\frac{\partial{}V_\text{FECAP}}{\partial{}t}
+\end{IEEEeqnarray}where $C_\text{FE}$ is calculated using Equation~(\ref{eq:FECAP}).

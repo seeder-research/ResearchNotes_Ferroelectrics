@@ -1,0 +1,138 @@
+\section{The Phase-Field Model for Ferroelectrics}
+
+A phenomelogical model for studying ferroelectrics is the phase-field model that is derived from Landau-Ginzburg-Devonshire (LGS) theory. The approach is to first write the free energy of the ferroelectric system, $f_\text{total}$. If the time-dependent variation needs to be studied, the time-dependent Ginzburg-Landau (TDGL) equation, written as\begin{IEEEeqnarray}{rCl}
+\frac{\partial{}P_{i}}{\partial t} & = & -L_{i}\frac{\partial{}f_\text{total}}{\partial P_{i}}\text{,~where~}i\in\{1, 2, 3\} \label{eq:tdgl}
+\end{IEEEeqnarray}is then applied. In Equation~(\ref{eq:tdgl}), $i$ indicates the Cartesian axis directions where ${x: 1, y: 2, z: 3}$. In most approaches \cite{Cao1991,Wang2004,Volker2011,Chen2014}, $f_\text{total}$ is written as\begin{IEEEeqnarray}{rCl}
+f_\text{total} & = & f_\text{Landau} + f_\text{grad} + f_\text{coup} + f_\text{elast} + f_\text{elec} + f_\text{dip}
+\end{IEEEeqnarray}where $f_\text{Landau}$, $f_\text{grad}$, $f_\text{coup}$, $f_\text{elast}$, $f_\text{elec}$ and $f_\text{dip}$ are the Landau energy, gradient energy, electrostrictive coupling energy, elastic energy, and electric energy, respectively.
+
+In the finite element method (FEM), Equation~(\ref{eq:tdgl}) needs to be written in the weak form by moving all terms to the left hand, multiplying both sides of the equation by a test function, $w$, and finally, integrating over the entire domain of interest. Mathematically, the weak form of Equation~(\ref{eq:tdgl}) is given as\begin{IEEEeqnarray}{rCl}
+\int_{\Omega}\left(\frac{\partial P_{i}}{\partial t} + L_{i}\frac{\partial f_\text{total}}{\partial P_{i}}\right)w_{Pi}~dV & = & 0
+\end{IEEEeqnarray}where $\Omega$ defines the domain of interest including the boundary. Thus, to derive the weak form, one needs to find the partial derivatives $\partial f_{total} / \partial P_{i}$.
+
+\subsection{The Landau Energy, $f_\text{Landau}$}
+
+The Landau potential energy, $f_\text{Landau}$, describes the energy landscape of the ferroelectric system where the minima correspond to thermodynamically stable spontaneous polarization states. $f_\text{Landau}$ is generally written as\begin{IEEEeqnarray}{rCl}
+f_\text{Landau} & = \frac{1}{2}\alpha_{ij}P_{i}P_{j} + \frac{1}{2}\alpha_{ijkl}P_{i}P_{j}P_{k}P_{l} + \frac{1}{6}\alpha_{ijklmn}P_{i}P_{j}P_{k}P_{l}P_{m}P_{n}
+\end{IEEEeqnarray}In tetragonal polarized ferroelectric such as $\text{PbTiO}_{3}$, the sixth-order polynomial used to model the six equivalent minima along the $\left\langle100\right\rangle$ directions is given by\begin{IEEEeqnarray}{rCl}
+f_\text{Landau} & = & \alpha_{1}\left(P_{1}^{2}+P_{2}^{2}+P_{3}^{2}\right) + \alpha_{11}\left(P_{1}^{4}+P_{2}^{4}+P_{3}^{4}\right)+ \alpha_{12}\left(P_{1}^{2}P_{2}^{2}+P_{2}^{2}P_{3}^{2}+P_{1}^{2}P_{3}^{2}\right) \nonumber \\
+&& +~\alpha_{111}\left(P_{1}^{6}+P_{2}^{6}+P_{3}^{6}\right) + \alpha_{112}\left[P_{1}^{4}\left(P_{2}^{2}+P_{3}^{2}\right)+P_{2}^{4}\left(P_{1}^{2}+P_{3}^{2}\right)+P_{3}^{4}\left(P_{1}^{2}+P_{2}^{2}\right)\right] \label{eq:flandau} \\
+&& +~\alpha_{123}P_{1}^{2}P_{2}^{2}P_{3}^{2} \nonumber
+\end{IEEEeqnarray}Following from Equation~(\ref{eq:flandau}), the general term entering the TDGL equation is derived as\begin{IEEEeqnarray}{rCl}
+\frac{\partial f_\text{Landau}}{\partial P_{i}} & = & 2\alpha_{1}P_{i} + 4\alpha_{11}P_{i}^{3} + 2\alpha_{12}P_{i}\left(P_{j}^{2}+P_{k}^{2}\right) \nonumber \\
+&& +~6\alpha_{111}P_{i}^{5} + 2\alpha_{112}P_{i}\left[2P_{i}^{2}\left(P_{j}^{2}+P_{k}^{2}\right) + P_{j}^{4} + P_{k}^{4}\right] \label{eq:sflandau} \\
+&& +~2\alpha_{123}P_{i}P_{j}^{2}P_{k}^{2} \nonumber
+\end{IEEEeqnarray}where $i\neq{}j$, $i\neq{}k$, $j\neq{}k$. Expanding Equation (\ref{eq:sflandau}) to 3D space yields\begin{IEEEeqnarray}{rCl}
+\frac{\partial f_\text{Landau}}{\partial P_{1}} & = & 2\alpha_{1}P_{1} + 4\alpha_{11}P_{1}^{3} + 2\alpha_{12}P_{1}\left(P_{2}^{2}+P_{3}^{2}\right) \nonumber \\
+&& +~6\alpha_{111}P_{1}^{5} + 2\alpha_{112}P_{1}\left[2P_{1}^{2}\left(P_{2}^{2}+P_{3}^{2}\right) + P_{2}^{4} + P_{3}^{4}\right] \label{eq:sflandaux} \\
+&& +~2\alpha_{123}P_{1}P_{2}^{2}P_{3}^{2} \nonumber \\
+\frac{\partial f_\text{Landau}}{\partial P_{2}} & = & 2\alpha_{1}P_{2} + 4\alpha_{11}P_{2}^{3} + 2\alpha_{12}P_{2}\left(P_{1}^{2}+P_{3}^{2}\right) \nonumber \\
+&& +~6\alpha_{111}P_{2}^{5} + 2\alpha_{112}P_{2}\left[2P_{2}^{2}\left(P_{1}^{2}+P_{3}^{2}\right) + P_{1}^{4} + P_{3}^{4}\right] \label{eq:sflandauy} \\
+&& +~2\alpha_{123}P_{1}^{2}P_{2}P_{3}^{2} \nonumber \\
+\frac{\partial f_\text{Landau}}{\partial P_{3}} & = & 2\alpha_{1}P_{3} + 4\alpha_{11}P_{3}^{3} + 2\alpha_{12}P_{3}\left(P_{1}^{2}+P_{2}^{2}\right) \nonumber \\
+&& +~6\alpha_{111}P_{3}^{5} + 2\alpha_{112}P_{3}\left[2P_{3}^{2}\left(P_{1}^{2}+P_{2}^{2}\right) + P_{1}^{4} + P_{2}^{4}\right] \label{eq:sflandauz} \\
+&& +~2\alpha_{123}P_{1}^{2}P_{2}^{2}P_{3} \nonumber
+\end{IEEEeqnarray}Note that\begin{IEEEeqnarray}{rCl}
+\alpha_{1} & = & \frac{\left(T-T_{0}\right)}{2\varepsilon_{0}C_{0}} = \frac{1}{2\varepsilon}
+\end{IEEEeqnarray}where $T$, $T_{0}$ and $C_{0}$ are the temperature, Curie-Weiss Temperature and Curie-Weiss constant, respectively, of the bulk ferroelectric.
+
+\subsection{The Gradient Energy, $f_\text{grad}$}
+
+The gradient or exchange energy, $f_\text{grad}$, governs the formation of domain walls with finite thickness. Generally, $f_\text{grad}$ is written as \cite{Cao1991}\begin{IEEEeqnarray}{rCl}
+f_\text{grad} & = & \frac{1}{2}G_{ijkl}P_{ij}P_{kl}
+\end{IEEEeqnarray}For a cubic system, $f_\text{grad}$ is given by\begin{IEEEeqnarray}{rCl}
+f_\text{grad} & = & \frac{1}{2}G_{11}\left(P_{1,1}^{2} + P_{2,2}^{2} + P_{3,3}^{2}\right) + G_{12}\left(P_{1,1}P_{2,2} + P_{2,2}P_{3,3} + P_{1,1}P_{3,3}\right) \nonumber \\
+&& +~\frac{1}{2}G_{44}\left[\left(P_{1,2}+P_{2,1}\right)^{2}+\left(P_{2,3}+P_{3,2}\right)^{2}+\left(P_{3,1}+P_{1,3}\right)^{2}\right] \\
+&& +~\frac{1}{2}G'_{44}\left[\left(P_{1,2}-P_{2,1}\right)^{2}+\left(P_{2,3}-P_{3,2}\right)^{2}+\left(P_{3,1}-P_{1,3}\right)^{2}\right] \nonumber
+\end{IEEEeqnarray}where $P_{i,j} = \partial P_{i} / \partial x_{j}$. Next, we utilize the chain rule to transform the operator:\begin{IEEEeqnarray}{rCl}
+\frac{\partial}{\partial P_{i}} & = & \left(\frac{\partial}{\partial P_{i}} \frac{\partial \eta}{\partial \eta}\right) \\
+& = & \left(\frac{\partial\eta}{\partial P_{i}}\right)\frac{\partial}{\partial\eta} \\
+& = & \frac{\partial P_{1,1}}{\partial P_{i}}\frac{\partial}{\partial P_{1,1}} + \frac{\partial P_{1,2}}{\partial P_{i}}\frac{\partial}{\partial P_{1,2}} + \frac{\partial P_{1,3}}{\partial P_{i}}\frac{\partial}{\partial P_{1,3}} \nonumber \\
+&& +~\frac{\partial P_{2,1}}{\partial P_{i}}\frac{\partial}{\partial P_{2,1}} + \frac{\partial P_{2,2}}{\partial P_{i}}\frac{\partial}{\partial P_{2,2}} + \frac{\partial P_{2,3}}{\partial P_{i}}\frac{\partial}{\partial P_{2,3}} \\
+&& +~\frac{\partial P_{3,1}}{\partial P_{i}}\frac{\partial}{\partial P_{3,1}} + \frac{\partial P_{3,2}}{\partial P_{i}}\frac{\partial}{\partial P_{3,2}} + \frac{\partial P_{3,3}}{\partial P_{i}}\frac{\partial}{\partial P_{3,3}} \nonumber
+\end{IEEEeqnarray}Next, we also have\begin{IEEEeqnarray}{rCl}
+\frac{\partial P_{j,k}}{\partial P_{i}} & = & \left\lbrace\begin{IEEEeqnarraybox}[][c]{l}
+\IEEEstrut
+\frac{\partial}{\partial x_{k}}\text{~if~}i=j \nonumber \\
+0\text{~otherwise} \nonumber
+\IEEEstrut
+\end{IEEEeqnarraybox}\right.
+\end{IEEEeqnarray}Hence, the gradient energy density term yields\begin{IEEEeqnarray}{rCl}
+\frac{\partial f_\text{grad}}{\partial P_{1}} & = & \frac{\partial}{\partial x_{1}}\left[G_{11}P_{1,1} + G_{12}\left(P_{2,2} + P_{3,3}\right)\right] \label{eq:grad_resp} \\
+&& +~\frac{\partial}{\partial x_{2}}\left[G_{44}\left(P_{1,2}+P_{2,1}\right) + G'_{44}\left(P_{1,2}-P_{2,1}\right)\right] \nonumber \\
+&& +~\frac{\partial}{\partial x_{3}}\left[G_{44}\left(P_{1,3}+P_{3,1}\right) + G'_{44}\left(P_{1,3}-P_{3,1}\right)\right] \nonumber \\
+& = & G_{11}P_{1,11} + G_{12}\left(P_{2,21} + P_{3,31}\right) \\
+&& +~\left(G_{44}+G'_{44}\right)P_{1,22} + \left(G_{44}-G'_{44}\right)P_{2,12} \nonumber \\
+&& +~\left(G_{44}+G'_{44}\right)P_{1,33} + \left(G_{44}-G'_{44}\right)P_{3,13} \nonumber
+\end{IEEEeqnarray}Assume that $P_{i}$ is continuously double differentiable such that $P_{i,jk}=P_{i,kj}$, where\begin{IEEEeqnarray}{rCl}
+P_{i,jk} = \frac{\partial^{2}P_{i}}{\partial x_{j}\partial x_{k}}
+\end{IEEEeqnarray}Furthermore, if we have $G_{11}=G_{44}+G'_{44}$ and $G_{12}=G'_{44}-G_{44}$, Equation~(\ref{eq:grad_resp}) may be further simplified as\begin{IEEEeqnarray}{rCl}
+\frac{\partial f_\text{grad}}{\partial P_{1}} & = & G_{11}\left(P_{1,11} + P_{1,22} + P_{1,33}\right)=G_{11}\left(\nabla\cdot\nabla P_{1}\right)=G_{11}\nabla^{2}P_{1}
+\end{IEEEeqnarray}Extending further to $P_{2}$ and $P_{3}$, then\begin{IEEEeqnarray}{rCl}
+\frac{\partial f_\text{grad}}{\partial P_{i}} & = & G_{11}\nabla^{2}P_{i} = G_{11}\Delta P_{i} \label{eq:gradEnergyDens}
+\end{IEEEeqnarray}
+
+Of interest is the gradient energy density term that appears in the weak form for the TDGL equation. Using the approximation in Equation~(\ref{eq:gradEnergyDens}), the corresponding term in the weak form may be derived as\begin{IEEEeqnarray}{rCl}
+\int_{\Omega} L\frac{\partial f_\text{grad}}{\partial P_{i}}w~dV & = & LG_{11}\int_{\Omega} \left(\nabla\cdot\nabla P_{i}\right)w~dV \label{eq:weakFormTDGL}
+\end{IEEEeqnarray}where $w$ is the test function (which is a scalar field). Integrating Equation~(\ref{eq:weakFormTDGL}) by parts gives\begin{IEEEeqnarray}{rCl}
+\int_{\Omega} \nabla \cdot \left[\left(\nabla P_{i}\right(\left(w\right)\right]~dV & = &  \int_{\Omega} \left(\nabla^{2}P_{i}\right)w + \left(\nabla P_{i}\right)\cdot\left(\nabla w\right)~dV \\
+& = & \int_{\Gamma} \left(w\nabla P_{i}\right)\cdot\bm{n}~dS~\text{(By the divergence theorem)} \nonumber \\
+\int_{\Omega} \left(\nabla^{2}P_{i}\right)w~dV & = & \int_{\Gamma} \left(w\nabla P_{i}\right)\cdot\bm{n}~dS - \int_{\Omega}\left(\nabla P_{i}\right)\cdot\left(\nabla\bm{w}\right)~dV
+\end{IEEEeqnarray}where the surface integral is the boundary condition for $\nabla P_{i}$.
+
+\subsection{The Elastic Strain, Electrostrictive Coupling and Elastic Energies ($f_\text{ES}$, $f_\text{coup}$, and $f_\text{elast}$, respectively)}
+
+The total strain in the ferroelectric system, $\epsilon_{ij}$, consists of two portions \cite{Volker2011}: the elastic strain, $\epsilon_{ij}^\text{elast}$, induced (\emph{e.g.}, by external mechanical loading) and the stress-free electrostrictive strain, $\epsilon_{ij}^\text{strict}$, caused by the polarization field. They are related by\begin{IEEEeqnarray}{rCl}
+\epsilon_{ij} & = & \epsilon_{ij}^\text{elas} + \epsilon_{ij}^\text{strict} \label{eq:total_strain}
+\end{IEEEeqnarray}For a quadratic electrostrictive behavior, the spontaneous strains $\epsilon_{ij}^\text{strict}$ can be written as \begin{IEEEeqnarray}{rCl}
+\epsilon_{11}^\text{strict} & = & Q_{11}P_{1}^{2} + Q_{12}\left(P_{2}^{2} + P_{3}^{2}\right) \label{eq:strictstrain1} \\
+\epsilon_{22}^\text{strict} & = & Q_{11}P_{2}^{2} + Q_{12}\left(P_{1}^{2} + P_{3}^{2}\right) \\
+\epsilon_{33}^\text{strict} & = & Q_{11}P_{3}^{2} + Q_{12}\left(P_{1}^{2} + P_{2}^{2}\right) \\
+\epsilon_{12}^\text{strict} & = & \epsilon_{21}^\text{strict} = Q_{44}P_{1}P_{2} \\
+\epsilon_{23}^\text{strict} & = & \epsilon_{32}^\text{strict} = Q_{44}P_{2}P_{3} \\
+\epsilon_{13}^\text{strict} & = & \epsilon_{31}^\text{strict} = Q_{44}P_{1}P_{3} \label{eq:strictstrain6}
+\end{IEEEeqnarray}where $Q_{ij}$ are electrostrictive constants. The elastic strain energy density, $f_\text{ES}$, can be written as\begin{IEEEeqnarray}{rCl}
+f_\text{ES} & = & \frac{1}{2}c_{ijkl}^{E}\epsilon_{ij}^\text{elast}\epsilon_{kl}^\text{elast} = \frac{1}{2}c_{ijkl}^{E}\left(\epsilon_{ij}-\epsilon_{ij}^\text{strict}\right)\left(\epsilon_{kl}-\epsilon_{kl}^\text{strict}\right) \label{eq:elastedens}
+\end{IEEEeqnarray}where $c_{ijkl}^{E}$ is the elastic stiffness tensor. Moreover, $f_\text{ES}$ can be separated in terms of the pure elastic energy density, $f_\text{elast}$, which depends on the strains only, and the electrostrictive coupling energy density, $f_\text{coup}$:\begin{IEEEeqnarray}{rCl}
+f_\text{ES} & = & f_\text{elast} + f_\text{coup} \label{eq:elastedenscomp}
+\end{IEEEeqnarray}For a cubic material, the elastic stiffness tensor in Voigt's notation has the three independent components $C_{11}$, $C_{12}$ and $C_{44}$. Substituting Equations~(\ref{eq:total_strain}--\ref{eq:strictstrain6}) into Equation~(\ref{eq:elastedens}) and applying Equation~(\ref{eq:elastedenscomp}) gives\begin{IEEEeqnarray}{rCl}
+f_\text{elast} & = & \frac{1}{2}C_{11}\left(\epsilon_{11}^{2} + \epsilon_{22}^{2} + \epsilon_{33}^{2}\right) + C_{12}\left(\epsilon_{11}\epsilon_{22} + \epsilon_{22}\epsilon_{33} + \epsilon_{11}\epsilon_{33}\right) + 2C_{44}\left(\epsilon_{12}^{2} + \epsilon_{23}^{2} + \epsilon_{13}^{2}\right)
+\end{IEEEeqnarray}and\begin{IEEEeqnarray}{rCl}
+f_\text{coup} & = & q_{11}\left(\epsilon_{11}P_{1}^{2}+\epsilon_{22}P_{2}^{2}+\epsilon_{33}P_{3}^{2}\right)+q_{12}\left[\epsilon_{11}\left(P_{2}^{2}+P_{3}^{2}\right)+\epsilon_{22}\left(P_{1}^{2}+P_{3}^{2}\right)+\epsilon_{33}\left(P_{1}^{2}+P_{2}^{2}\right)\right] \\
+&& +~q_{44}\left(P_{1}P_{2}\epsilon_{12}+P_{1}P_{3}\epsilon_{13}+P_{2}P_{3}\epsilon_{23}\right) + \beta_{1}\left(P_{1}^{4}+P_{2}^{4}+P_{3}^{4}\right) + \beta_{2}\left(P_{1}^{2}P_{2}^{2}+P_{1}^{2}P_{3}^{2}+P_{2}^{2}P_{3}^{2}\right) \nonumber
+\end{IEEEeqnarray}with\begin{IEEEeqnarray}{rCl}
+q_{11} & = & -C_{11}Q_{11} - 2C_{12}Q_{12} \\
+q_{12} & = & -C_{12}\left(Q_{11}+Q_{12}\right) - C_{11}Q_{12} \\
+q_{44} & = & -4C_{44}Q_{44} \\
+\beta_{1} & = & \frac{C_{11}Q_{11}^{2}}{2} + 2C_{12}Q_{11}Q_{12} + C_{11}Q_{12}^{2} + C_{12}Q_{12}^{2} \\
+\beta_{2} & = & C_{11}Q_{12}\left(2Q_{11} + Q_{12}\right) + C_{12}\left(Q_{11}^{2} + 2Q_{11}Q_{12} + 3Q_{12}^{2}\right) + 2C_{44}Q_{44}^{2}
+\end{IEEEeqnarray}
+
+\subsection{The Electric Energy, $f_\text{elec}$}
+
+In the free space occupied by the ferroelectric material, the electric energy, $f_\text{elec}$, due to the polarization on the electric field, which needs to be calculated from the displacement field, $D_{i}$, and $P_{i}$ as\begin{IEEEeqnarray}{rCl}
+f_\text{elec} & = & -\bm{P}\cdot\bm{E}-\frac{1}{2}\left(D_{i} - P_{i}\right)\left(D_{i} - P_{i}\right) \nonumber \\
+& = & -\bm{P}\cdot\bm{E}-\frac{1}{2}\varepsilon_\text{b}\left(E_{i}^{2}\right) \label{eq:felect} \\
+& = & -P_{1}E_{1}-P_{2}E_{2}-P_{3}E_{3}-\frac{1}{2}\varepsilon_\text{b}\left(E_{1}^{2} + E_{2}^{2} + E_{3}^{2}\right) \nonumber
+\end{IEEEeqnarray}Note that we can relate the electric field to an electrostatic potential, $\phi$, given as\begin{IEEEeqnarray} {rCl}
+\bm{E} & = & -\text{grad}\left(\phi\right) = -\frac{\partial\phi}{\partial x_{i}} = \left(-\frac{\partial\phi}{\partial x_{1}},-\frac{\partial\phi}{\partial x_{2}},-\frac{\partial\phi}{\partial x_{3}}\right) \label{eq:efield_pot}
+\end{IEEEeqnarray}Substituting Equation~(\ref{eq:efield_pot}) into Equation~(\ref{eq:felect}), we obtain\begin{IEEEeqnarray}{rCl}
+f_\text{elec} & = & P_{1}\frac{\partial\phi}{\partial x_{1}} + P_{2}\frac{\partial\phi}{\partial x_{2}} + P_{3}\frac{\partial\phi}{\partial x_{3}} - \frac{1}{2}\varepsilon_\text{b}\left[\left(\frac{\partial\phi}{\partial x_{1}}\right)^{2} + \left(\frac{\partial\phi}{\partial x_{2}}\right)^{2} + \left(\frac{\partial\phi}{\partial x_{3}}\right)^{2}\right]
+\end{IEEEeqnarray}
+
+Maxwell's equation also holds in the ferroelectric dielectric:\begin{IEEEeqnarray}{rCl}
+\nabla\cdot\bm{D} = \nabla\cdot\left(\varepsilon_\text{b}\bm{E}+\bm{P}\right) = \rho_\text{free} & = & 0 \text{~in the insulating ferroelectric dielectric} \\
+\varepsilon_\text{b}\nabla\cdot\bm{E} + \nabla\cdot\bm{P} & = & 0 \\
+\varepsilon_\text{b}\Delta\phi & = & \nabla\cdot\bm{P} \label{eq:newPoisson}
+\end{IEEEeqnarray}Converting Equation~(\ref{eq:newPoisson}) into the weak form, one obtains\begin{IEEEeqnarray}{rCl}
+\int_{\Omega}\left(\nabla\cdot\bm{P} - \varepsilon_\text{b}\nabla^{2}\phi\right)w_\phi~dV & = & 0 \\
+\int_{\Omega}\left(\nabla\cdot\bm{P}\right)w_\phi - \left(\varepsilon_\text{b}\nabla^{2}\phi\right)w_\phi~dV & = & 0
+\end{IEEEeqnarray}Integrating by parts gives:\begin{IEEEeqnarray}{C}
+\int_{\Gamma}\left(\bm{P}\cdot\bm{n}\right)w_\phi~dS - \int_{\Omega}\bm{P}\cdot\left(\nabla w_\phi\right)~dV - \varepsilon_\text{b}\int_{\Gamma}\left(\left(\nabla\phi\right)\cdot\bm{n}\right)w_\phi~dS + \varepsilon_\text{b}\int_{\Omega}\left(\nabla\phi\right)\cdot\left(\nabla w_\phi\right)~dV~=~0 \\
+\therefore \int_{\Omega}\varepsilon_\text{b}\left(\nabla\phi\right)\cdot\left(\nabla w_\phi\right) - \bm{P}\cdot\left(\nabla w_\phi\right)~dV~=~\int_{\Gamma}\varepsilon_\text{b}\left(\left(\nabla\phi\right)\cdot\bm{n}\right)w_\phi - \left(\bm{P}\cdot\bm{n}\right)w_\phi~dS \\
+\int_{\Omega}\left(\varepsilon_\text{b}\nabla\phi-\bm{P}\right)\cdot\left(\nabla w_\phi\right)~dV~=~\int_{\Gamma}\left[\left(\varepsilon_\text{b}\nabla\phi-\bm{P}\right)\cdot\bm{n}\right]w_\phi~dS
+\end{IEEEeqnarray}
+
+\subsection{The Semi-Implicit Fourier-Spectral Method}
+
+The temporal evolution of the polarization vector fields, and thus the domain structures, can be obtained by numerically solving the TDGL equations. Since the elastic strain energy and the electrostrictive energy due to the heterogeneous strain field have a single analytical expression as a function of the polarization field in Fourier space, the computer simulation is most conveniently performed directly in the reciprocal space. In Fourier-transforming the TDGL equations, one must transform $\partial f_\text{total}/\partial P_{i}$ instead of $f_\text{total}$ to reciprocal space \cite{Hu2005}.
